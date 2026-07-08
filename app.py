@@ -5,9 +5,9 @@ from sklearn.model_selection import train_test_split # for data devide
 from sklearn.tree import DecisionTreeClassifier  #ml model selection ka liye
 from sklearn.metrics import accuracy_score  #for accuracy check
 
-st.set_page_config(page_title="Loan Approval App",page_icon="🏦")
+st.set_page_config(page_title="Loan Approval App",page_icon="🏚️")
 
-st.title("🏦 Loan Approval Prediction System")
+st.title("🏚️ Loan Approval Prediction System")
 #loan dataset
 df=pd.read_csv("loan.csv")
 
@@ -15,7 +15,7 @@ df=pd.read_csv("loan.csv")
 x =df[["Income","CIBIL_Score","Loan_Amount","Employment_Years"]]
 y =df["Loan_Status"]
 #data divide
-x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.3,random_state=42)
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.3,random_state=42,stratify=y)
 
 
 model =DecisionTreeClassifier(max_depth=3,min_samples_split=8,min_samples_leaf=4,random_state=42)
@@ -26,11 +26,11 @@ prediction = model.predict(x_test)
 
 accuracy = accuracy_score(y_test,prediction)
 
-st.success(f"Model Accuracy:{accuracy*100:.2f}")
+st.success(f"Model Accuracy:{accuracy*100:.2f}%")
 
 income = st.sidebar.number_input("💵 Income :",min_value=10000,max_value=100000,value=40000,step=1000)
 CIBIL = st.sidebar.number_input(" 🎼CIBIL Score:",min_value=300,max_value=900,value=700,step=50)
-Loan  = st.sidebar.number_input(" 💰Loan Ammount:",min_value=50000,max_value=1000000,value=500000,step=5000)
+Loan  = st.sidebar.number_input(" 💰Loan Ammount:",min_value=50000,max_value=1000000,value=50000,step=5000)
 experience  = st.sidebar.number_input("Employement Years:",min_value=0,max_value=40,value=5,step=5)
 
 if st.button("Predict Loan"):
@@ -40,8 +40,8 @@ if st.button("Predict Loan"):
         if approved<0:
             approved=0
             st.success("Loan Approved")
-            st.info(f"Approved Loan Ammount : ₹{approved:,}")
+            st.info(f"Approved Loan Ammount :{approved:,}")
     else:
-        st.error("❌ Loan Rejected")
+        st.success(" Loan Rejected")
 st.markdown("---")
 st.caption("Mini Project 3 | Loan Approval Prediction |  Decision Tree Classifiers")
